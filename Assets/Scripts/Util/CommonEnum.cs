@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class CommonEnum
 {
-    public enum EResource
+    public enum EAddressableKey
     {
         UI,
+        Json,
     }
 
     public enum EUI

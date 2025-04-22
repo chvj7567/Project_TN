@@ -47,7 +47,7 @@ public class ResourceManager : SingletoneStatic<ResourceManager>
 
     async Task<bool> SaveLocationInfo()
     {
-        foreach (CommonEnum.EResource resource in Enum.GetValues(typeof(CommonEnum.EResource)))
+        foreach (CommonEnum.EAddressableKey resource in Enum.GetValues(typeof(CommonEnum.EAddressableKey)))
         {
             TaskCompletionSource<bool> saveComplete = new TaskCompletionSource<bool>();
 
