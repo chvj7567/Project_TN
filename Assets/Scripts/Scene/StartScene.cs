@@ -1,12 +1,14 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Test : MonoBehaviour
+public class StartScene : BaseScene
 {
     async void Start()
     {
         await ResourceManager.Instance.Init();
         await JsonManager.Instance.Init();
         UIManager.Instance.Init();
-        UIManager.Instance.ShowUI(CommonEnum.EUI.UIAlarm, new UIAlarmArg { alarmText = JsonManager.Instance.GetStringData(1) });
+
+        ResourceManager.Instance.LoadScene(CommonEnum.EScene.TestScene);
     }
 }

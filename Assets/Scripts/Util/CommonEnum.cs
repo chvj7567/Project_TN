@@ -6,6 +6,7 @@ public class CommonEnum
     {
         UI,
         Json,
+        Scene,
     }
 
     public enum EUI
@@ -34,5 +35,10 @@ public class CommonEnum
     public enum EAtlas
     {
         Item
+    }
+
+    public enum EScene
+    {
+        TestScene,
     }
 }

@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 207b1d55791f26049a539ff768438e21
   m_SerializeEntries:
+  - m_GUID: 025374e4b7f2cd442905f98631e5dd56
+    m_Address: Assets/Scenes/TestScene.unity
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Scene
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8cdaf0ce48acfba4b91f451a944c84d9
     m_Address: Assets/AddressableResource/UI/UIAlarm.prefab
     m_ReadOnly: 0

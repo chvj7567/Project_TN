@@ -8,6 +8,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
+using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
 
 public class ResourceManager : SingletoneStatic<ResourceManager>
@@ -82,6 +84,24 @@ public class ResourceManager : SingletoneStatic<ResourceManager>
         return true;
     }
 
+    public void LoadScene(CommonEnum.EScene sceneType, Action<Scene> callback = null)
+    {
+        if (_dicAssetInfo.TryGetValue(sceneType.ToString(), out var pathInfo) == false)
+            return;
+
+        Addressables.LoadSceneAsync(pathInfo, LoadSceneMode.Single).Completed += handle =>
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                callback?.Invoke(handle.Result.Scene);
+            }
+            else
+            {
+                Addressables.UnloadSceneAsync(handle);
+            }
+        };
+    }
+
     void LoadAsset<T>(string assetName, Action<T> callback = null) where T : UnityEngine.Object
     {
         if (_dicAssetInfo.TryGetValue(assetName, out var pathInfo) == false)
@@ -92,6 +112,10 @@ public class ResourceManager : SingletoneStatic<ResourceManager>
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 callback?.Invoke(handle.Result);
+            }
+            else
+            {
+                Addressables.Release(handle);
             }
         };
     }

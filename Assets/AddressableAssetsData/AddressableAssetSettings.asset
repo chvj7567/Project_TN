@@ -101,6 +101,7 @@ MonoBehaviour:
     - default
     - UI
     - Json
+    - Scene
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 611b4c7a3259a62429e24f57840396c6, type: 2}
