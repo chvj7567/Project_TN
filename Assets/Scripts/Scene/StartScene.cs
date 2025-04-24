@@ -5,10 +5,11 @@ public class StartScene : BaseScene
 {
     async void Start()
     {
-        await ResourceManager.Instance.Init();
-        await JsonManager.Instance.Init();
-        UIManager.Instance.Init();
+        await CHResourceManager.Instance.Init();
+        await CHJsonManager.Instance.Init();
+        CHUIManager.Instance.Init();
+        CHSceneManager.Instance.Init();
 
-        ResourceManager.Instance.LoadScene(CommonEnum.EScene.TestScene);
+        CHSceneManager.Instance.ChangeScene(CommonEnum.EScene.TestScene);
     }
 }

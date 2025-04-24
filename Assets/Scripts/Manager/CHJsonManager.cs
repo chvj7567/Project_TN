@@ -11,7 +11,7 @@ public class StringData
     public string english;
 }
 
-public partial class JsonManager : SingletoneStatic<JsonManager>
+public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
 {
     [Serializable]
     private class JsonData
@@ -64,7 +64,7 @@ public partial class JsonManager : SingletoneStatic<JsonManager>
         Action<TextAsset> callback;
         _liStringData.Clear();
 
-        ResourceManager.Instance.LoadJson(CommonEnum.EJson.String, callback = (TextAsset textAsset) =>
+        CHResourceManager.Instance.LoadJson(CommonEnum.EJson.String, callback = (TextAsset textAsset) =>
         {
             var jsonData = JsonUtility.FromJson<JsonData>(textAsset.text);
             foreach (var data in jsonData.arrStringData)
@@ -80,7 +80,7 @@ public partial class JsonManager : SingletoneStatic<JsonManager>
     }
 }
 
-public partial class JsonManager
+public partial class CHJsonManager
 {
     public string GetStringData(int stringID, SystemLanguage languageType = SystemLanguage.English)
     {

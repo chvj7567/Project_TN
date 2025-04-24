@@ -13,7 +13,7 @@ using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D;
 
-public class ResourceManager : SingletoneStatic<ResourceManager>
+public class CHResourceManager : SingletoneStatic<CHResourceManager>
 {
     private bool _initialize = false;
     private List<AsyncOperationHandle> _liResouceHandle = new List<AsyncOperationHandle>();
@@ -92,12 +92,14 @@ public class ResourceManager : SingletoneStatic<ResourceManager>
         return true;
     }
 
-    public void LoadScene(CommonEnum.EScene sceneType, Action<Scene> callback = null)
+    public void LoadScene(CommonEnum.EScene sceneType, LoadSceneMode sceneMode, Action<Scene> callback = null)
     {
         if (_dicAssetInfo.TryGetValue(sceneType.ToString(), out var pathInfo) == false)
             return;
+        AsyncOperationHandle<SceneInstance> handle = Addressables.LoadSceneAsync(pathInfo, sceneMode);
+        _liResouceHandle.Add(handle);
 
-        Addressables.LoadSceneAsync(pathInfo, LoadSceneMode.Additive).Completed += handle =>
+        handle.Completed += handle =>
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {

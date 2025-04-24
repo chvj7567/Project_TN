@@ -34,7 +34,7 @@ public abstract class UIBase : MonoBehaviour, IDisposable
     public virtual void Close(bool reuse = true)
     {
         Dispose();
-        UIManager.Instance.CloseUI(this, reuse);
+        CHUIManager.Instance.CloseUI(this, reuse);
     }
 
     public void Dispose()

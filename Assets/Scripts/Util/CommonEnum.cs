@@ -39,6 +39,7 @@ public class CommonEnum
 
     public enum EScene
     {
+        StartScene,
         TestScene,
     }
 }

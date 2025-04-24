@@ -4,9 +4,9 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class UIManager : SingletoneMonoBehaviour<UIManager>
+public class CHUIManager : SingletoneMonoBehaviour<CHUIManager>
 {
-    private const string MyCanvasName = "UICanvas";
+    private const string CanvasTag = "UICanvas";
     private bool _initialize = false;
     private Transform _rootTransform;
     private ReactiveDictionary<CommonEnum.EUI, UIBase> _dicCurrentUI = new ReactiveDictionary<CommonEnum.EUI, UIBase>();
@@ -33,7 +33,7 @@ public class UIManager : SingletoneMonoBehaviour<UIManager>
 
         if (_rootTransform == null)
         {
-            var uiCanvas = GameObject.FindGameObjectWithTag(MyCanvasName);
+            var uiCanvas = GameObject.FindGameObjectWithTag(CanvasTag);
             if (uiCanvas == null)
             {
                 Debug.LogError("UICanvas를 설정해주세요. (Tag : UICanvas)");
@@ -93,7 +93,7 @@ public class UIManager : SingletoneMonoBehaviour<UIManager>
         }
         else
         {
-            ResourceManager.Instance.LoadUI(uiType, (ui) =>
+            CHResourceManager.Instance.LoadUI(uiType, (ui) =>
             {
                 ui.transform.SetParent(_rootTransform);
                 var rectTransform = ui.GetComponent<RectTransform>();
