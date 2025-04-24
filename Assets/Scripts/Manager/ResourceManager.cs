@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -15,9 +16,8 @@ using UnityEngine.U2D;
 public class ResourceManager : SingletoneStatic<ResourceManager>
 {
     private bool _initialize = false;
-
-    //# 에셋 이름, 에셋 경로
-    Dictionary<string, IResourceLocation> _dicAssetInfo = new Dictionary<string, IResourceLocation>();
+    private List<AsyncOperationHandle> _liResouceHandle = new List<AsyncOperationHandle>();
+    private Dictionary<string, IResourceLocation> _dicAssetInfo = new Dictionary<string, IResourceLocation>();
 
     public async Task<bool> Init()
     {
@@ -45,6 +45,14 @@ public class ResourceManager : SingletoneStatic<ResourceManager>
         await initComplete.Task;
 
         return await SaveLocationInfo();
+    }
+
+    public void Clear()
+    {
+        foreach (var handle in _liResouceHandle)
+        {
+            Addressables.Release(handle);
+        }
     }
 
     async Task<bool> SaveLocationInfo()
@@ -89,7 +97,7 @@ public class ResourceManager : SingletoneStatic<ResourceManager>
         if (_dicAssetInfo.TryGetValue(sceneType.ToString(), out var pathInfo) == false)
             return;
 
-        Addressables.LoadSceneAsync(pathInfo, LoadSceneMode.Single).Completed += handle =>
+        Addressables.LoadSceneAsync(pathInfo, LoadSceneMode.Additive).Completed += handle =>
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
@@ -106,8 +114,10 @@ public class ResourceManager : SingletoneStatic<ResourceManager>
     {
         if (_dicAssetInfo.TryGetValue(assetName, out var pathInfo) == false)
             return;
+        AsyncOperationHandle<T> handle = Addressables.LoadAssetAsync<T>(pathInfo);
+        _liResouceHandle.Add(handle);
 
-        Addressables.LoadAssetAsync<T>(pathInfo).Completed += (handle) =>
+        handle.Completed += (handle) =>
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
