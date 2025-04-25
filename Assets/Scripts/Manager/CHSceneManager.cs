@@ -26,7 +26,7 @@ public class CHSceneManager : SingletoneStatic<CHSceneManager>
     {
         //# 이전 씬 타입 저장
         _qPostScene.Enqueue(CurrentScene);
-
+        CurrentScene = sceneType;
         CHResourceManager.Instance.LoadScene(sceneType, LoadSceneMode.Single);
     }
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TestScene : BaseScene
+public class TestScene : MonoBehaviour
 {
     void Start()
     {

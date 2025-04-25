@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StartScene : BaseScene
+public class StartScene : MonoBehaviour
 {
     async void Start()
     {

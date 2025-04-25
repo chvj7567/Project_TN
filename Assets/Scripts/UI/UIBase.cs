@@ -7,13 +7,13 @@ public class UIArg { }
 
 public abstract class UIBase : MonoBehaviour, IDisposable
 {
-    [HideInInspector] public CommonEnum.EUI UIType { get; private set; } 
-
     [SerializeField] private Button _backgroundButton;
     [SerializeField] private Button _backButton;
 
     protected UnityAction onCloseBackgroundButton;
     protected UnityAction onCloseBackButton;
+
+    public CommonEnum.EUI UIType { get; private set; }
 
     public void Init(CommonEnum.EUI uiType)
     {
