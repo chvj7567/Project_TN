@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 
 public class ReactiveCollection<ValueType>
 {
@@ -16,6 +14,14 @@ public class ReactiveCollection<ValueType>
     public ReactiveCollection()
     {
         _list = new List<ValueType>();
+    }
+
+    public void Clear()
+    {
+        _list.Clear();
+
+        OnAdd = null;
+        OnRemove = null;
     }
 
     public void Add(ValueType value)
@@ -74,6 +80,14 @@ public class ReactiveDictionary<KeyType, ValueType>
     public ReactiveDictionary()
     {
         _dictionary = new Dictionary<KeyType, ValueType>();
+    }
+
+    public void Clear()
+    {
+        _dictionary.Clear();
+
+        OnAdd = null;
+        OnRemove = null;
     }
 
     public void Add(KeyType key, ValueType value)

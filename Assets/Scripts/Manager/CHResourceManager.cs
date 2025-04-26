@@ -49,6 +49,8 @@ public class CHResourceManager : SingletoneStatic<CHResourceManager>
 
     public void Clear()
     {
+        _initialize = false;
+
         foreach (var handle in _liResouceHandle)
         {
             Addressables.Release(handle);

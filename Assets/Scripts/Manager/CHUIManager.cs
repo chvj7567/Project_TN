@@ -73,6 +73,15 @@ public class CHUIManager : SingletoneMonoBehaviour<CHUIManager>
         };
     }
 
+    public void Clear()
+    {
+        _initialize = false;
+
+        _dicCurrentUI.Clear();
+        _liWaitCloseUI.Clear();
+        _dicCashingUI.Clear();
+    }
+
     public void ShowUI(CommonEnum.EUI uiType, UIArg arg = null, Action<UIBase> callback = null)
     {
         if (arg == null)

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class CHSceneManager : SingletoneStatic<CHSceneManager>
 {
+    private bool _initialize = false;
     private Queue<CommonEnum.EScene> _qPostScene = new Queue<CommonEnum.EScene>();
     private Queue<CommonEnum.EScene> _qAddedScene = new Queue<CommonEnum.EScene>();
 
@@ -13,11 +14,18 @@ public class CHSceneManager : SingletoneStatic<CHSceneManager>
 
     public void Init()
     {
+        if (_initialize)
+            return;
+
+        _initialize = true;
+
         CurrentScene = CommonEnum.EScene.StartScene;
     }
 
     public void Clear()
     {
+        _initialize = false;
+
         _qPostScene.Clear();
         _qAddedScene.Clear();
     }

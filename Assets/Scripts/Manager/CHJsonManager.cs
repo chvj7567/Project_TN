@@ -19,6 +19,7 @@ public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
         public StringData[] arrStringData;
     }
 
+    private bool _initialize = false;
     private int _loadCompleteFileCount = 0;
     private int _loadingFileCount = 0;
     private List<Action<TextAsset>> _liJsonData = new List<Action<TextAsset>>();
@@ -27,11 +28,18 @@ public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
 
     public async Task Init()
     {
+        if (_initialize)
+            return;
+
+        _initialize = true;
+
         await LoadJsonData();
     }
 
     public void Clear()
     {
+        _initialize = false;
+
         _liJsonData.Clear();
         _liStringData.Clear();
     }
