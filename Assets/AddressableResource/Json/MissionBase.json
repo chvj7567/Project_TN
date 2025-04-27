@@ -1,0 +1,10 @@
+{
+	"arrMissionBaseInfo" :
+	[
+		{
+			"missionID": 101, 
+			"missionType": 1,
+			"value": 10
+		}
+	]
+}

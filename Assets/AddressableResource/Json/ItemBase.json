@@ -1,0 +1,11 @@
+{
+	"arrItemBaseInfo" :
+	[
+		{
+			"itemID": 10, 
+			"stringID": 1,
+			"abilityType": 1,
+			"iconImage": "TestImage"
+		}
+	]
+}

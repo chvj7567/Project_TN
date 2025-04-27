@@ -60,13 +60,22 @@ public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
     private class JsonInfo
     {
         public Table_StringInfo[] arrStringInfo;
+        public Table_Item_BaseInfo[] arrItemBaseInfo;
+        public Table_Item_AbilityInfo[] arrItemAbilityInfo;
+        public Table_ContantValueInfo[] arrConstantValueInfo;
+        public Table_Mission_BaseInfo[] arrMissionBaseInfo;
     }
 
     private bool _initialize = false;
     private int _loadCompleteFileCount = 0;
     private int _loadingFileCount = 0;
     private List<Action<TextAsset>> _liJsonInfo = new List<Action<TextAsset>>();
-    private List<Table_StringInfo> _liStringInfo = new List<Table_StringInfo>();
+
+    private Dictionary<(SystemLanguage, int), Table_StringInfo> _dicStringInfo = new Dictionary<(SystemLanguage, int), Table_StringInfo>();
+    private Dictionary<int, Table_Item_BaseInfo> _dicItemBaseInfo = new Dictionary<int, Table_Item_BaseInfo>();
+    private Dictionary<EItemAbililty, Table_Item_AbilityInfo> _dicItemAbilityInfo = new Dictionary<EItemAbililty, Table_Item_AbilityInfo>();
+    private Dictionary<EConstantValue, Table_ContantValueInfo> _dicConstantValueInfo = new Dictionary<EConstantValue, Table_ContantValueInfo>();
+    private Dictionary<int, Table_Mission_BaseInfo> _dicMissionBaseInfo = new Dictionary<int, Table_Mission_BaseInfo>();
 
     public async Task Init()
     {
@@ -83,18 +92,25 @@ public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
         _initialize = false;
 
         _liJsonInfo.Clear();
-        _liStringInfo.Clear();
+        _dicStringInfo.Clear();
     }
 
     private async Task LoadJsonInfo()
     {
-        Debug.Log("Load Json Info");
+        Debug.Log("Start Load Json Info");
+
         _loadCompleteFileCount = 0;
         _liJsonInfo.Clear();
 
         await LoadStringInfo();
+        await LoadItemBaseInfo();
+        await LoadItemAbilityInfo();
+        await LoadConstantValueInfo();
+        await LoadMissionBaseInfo();
 
         _loadingFileCount = _loadCompleteFileCount;
+
+        Debug.Log("End Load Json Info");
     }
 
     public float GetJsonLoadingPercent()
@@ -112,19 +128,117 @@ public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
         TaskCompletionSource<TextAsset> taskCompletionSource = new TaskCompletionSource<TextAsset>();
 
         Action<TextAsset> callback;
-        _liStringInfo.Clear();
+        _dicStringInfo.Clear();
 
         CHResourceManager.Instance.LoadJson(EJson.String, callback = (TextAsset textAsset) =>
         {
             JsonInfo jsonInfo = JsonUtility.FromJson<JsonInfo>(textAsset.text);
             foreach (var info in jsonInfo.arrStringInfo)
             {
-                _liStringInfo.Add(info);
+                _dicStringInfo.Add((info.languageType, info.stringID), info);
             }
 
             taskCompletionSource.SetResult(textAsset);
             ++_loadCompleteFileCount;
         });
+
+        Debug.Log("LoadStringInfo");
+
+        return await taskCompletionSource.Task;
+    }
+
+    private async Task<TextAsset> LoadItemBaseInfo()
+    {
+        TaskCompletionSource<TextAsset> taskCompletionSource = new TaskCompletionSource<TextAsset>();
+
+        Action<TextAsset> callback;
+        _dicItemBaseInfo.Clear();
+
+        CHResourceManager.Instance.LoadJson(EJson.ItemBase, callback = (TextAsset textAsset) =>
+        {
+            JsonInfo jsonInfo = JsonUtility.FromJson<JsonInfo>(textAsset.text);
+            foreach (var info in jsonInfo.arrItemBaseInfo)
+            {
+                _dicItemBaseInfo.Add(info.itemID, info);
+            }
+
+            taskCompletionSource.SetResult(textAsset);
+            ++_loadCompleteFileCount;
+        });
+
+        Debug.Log("LoadItemBaseInfo");
+
+        return await taskCompletionSource.Task;
+    }
+
+    private async Task<TextAsset> LoadItemAbilityInfo()
+    {
+        TaskCompletionSource<TextAsset> taskCompletionSource = new TaskCompletionSource<TextAsset>();
+
+        Action<TextAsset> callback;
+        _dicItemAbilityInfo.Clear();
+
+        CHResourceManager.Instance.LoadJson(EJson.ItemAbility, callback = (TextAsset textAsset) =>
+        {
+            JsonInfo jsonInfo = JsonUtility.FromJson<JsonInfo>(textAsset.text);
+            foreach (var info in jsonInfo.arrItemAbilityInfo)
+            {
+                _dicItemAbilityInfo.Add(info.abilityType, info);
+            }
+
+            taskCompletionSource.SetResult(textAsset);
+            ++_loadCompleteFileCount;
+        });
+
+        Debug.Log("LoadItemAbilityInfo");
+
+        return await taskCompletionSource.Task;
+    }
+
+    private async Task<TextAsset> LoadConstantValueInfo()
+    {
+        TaskCompletionSource<TextAsset> taskCompletionSource = new TaskCompletionSource<TextAsset>();
+
+        Action<TextAsset> callback;
+        _dicConstantValueInfo.Clear();
+
+        CHResourceManager.Instance.LoadJson(EJson.ConstantValue, callback = (TextAsset textAsset) =>
+        {
+            JsonInfo jsonInfo = JsonUtility.FromJson<JsonInfo>(textAsset.text);
+            foreach (var info in jsonInfo.arrConstantValueInfo)
+            {
+                _dicConstantValueInfo.Add(info.constantType, info);
+            }
+
+            taskCompletionSource.SetResult(textAsset);
+            ++_loadCompleteFileCount;
+        });
+
+        Debug.Log("LoadConstantValueInfo");
+
+        return await taskCompletionSource.Task;
+    }
+
+    private async Task<TextAsset> LoadMissionBaseInfo()
+    {
+        TaskCompletionSource<TextAsset> taskCompletionSource = new TaskCompletionSource<TextAsset>();
+
+        Action<TextAsset> callback;
+        _dicMissionBaseInfo.Clear();
+
+        CHResourceManager.Instance.LoadJson(EJson.MissionBase, callback = (TextAsset textAsset) =>
+        {
+            JsonInfo jsonInfo = JsonUtility.FromJson<JsonInfo>(textAsset.text);
+            foreach (var info in jsonInfo.arrMissionBaseInfo)
+            {
+                _dicMissionBaseInfo.Add(info.missionID, info);
+            }
+
+            taskCompletionSource.SetResult(textAsset);
+            ++_loadCompleteFileCount;
+        });
+
+        Debug.Log("LoadMissionBaseInfo");
 
         return await taskCompletionSource.Task;
     }
@@ -132,21 +246,19 @@ public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
 
 public partial class CHJsonManager
 {
-    public string GetTitleStringInfo(int stringID, SystemLanguage languageType = SystemLanguage.English)
+    public string GetTitleStringInfo(SystemLanguage languageType, int stringID)
     {
-        var findInfo = _liStringInfo.Find(_ => _.languageType == languageType && _.stringID == stringID);
-        if (findInfo == null)
+        if (_dicStringInfo.TryGetValue((languageType, stringID), out Table_StringInfo info) == false)
             return string.Empty;
 
-        return findInfo.title;
+        return info.title;
     }
 
-    public string GetDescriptionStringInfo(int stringID, SystemLanguage languageType = SystemLanguage.English)
+    public string GetDescriptionStringInfo(SystemLanguage languageType, int stringID)
     {
-        var findInfo = _liStringInfo.Find(_ => _.languageType == languageType && _.stringID == stringID);
-        if (findInfo == null)
+        if (_dicStringInfo.TryGetValue((languageType, stringID), out Table_StringInfo info) == false)
             return string.Empty;
 
-        return findInfo.description;
+        return info.description;
     }
 }

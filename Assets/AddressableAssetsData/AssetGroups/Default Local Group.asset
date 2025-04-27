@@ -21,14 +21,38 @@ MonoBehaviour:
     m_SerializedLabels:
     - Scene
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d064f76b73d34247ba9c7389f4e859e
+    m_Address: Assets/AddressableResource/Json/MissionBase.json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Json
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72899e46013414a4a93eaa2d2258e1d0
+    m_Address: Assets/AddressableResource/Json/ItemBase.json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Json
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8cdaf0ce48acfba4b91f451a944c84d9
     m_Address: Assets/AddressableResource/UI/UIAlarm.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9176ce9a29e914b46b82b892d3441f54
+    m_Address: Assets/AddressableResource/Json/ItemAbility.json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Json
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b876b79bfae684a418f7de71d2dfa813
     m_Address: Assets/AddressableResource/Json/String.json
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Json
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb945f0583d65194abf3ec763c313e73
+    m_Address: Assets/AddressableResource/Json/ConstantValue.json
     m_ReadOnly: 0
     m_SerializedLabels:
     - Json

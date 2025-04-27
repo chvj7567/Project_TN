@@ -25,6 +25,10 @@ public class CommonEnum
     public enum EJson
     {
         String,
+        ItemBase,
+        ItemAbility,
+        ConstantValue,
+        MissionBase,
     }
 
     public enum EFont
