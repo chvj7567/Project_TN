@@ -1,10 +1,11 @@
 {
-	"arrStringData" :
+	"arrStringInfo" :
 	[
 		{
+			"languageType": 10, 
 			"stringID": 1,
-			"korean": "테스트",
-			"english": "Test"
+			"title": "Test",
+			"description": "This is Test String"
 		}
 	]
 }

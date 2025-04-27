@@ -2,29 +2,71 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 using UnityEngine;
+using static CommonEnum;
 
 [Serializable]
-public class StringData
+public class Table_StringInfo
 {
+    //# Key
+    public SystemLanguage languageType;
     public int stringID;
-    public string korean;
-    public string english;
+
+    public string title;
+    public string description;
+}
+
+[Serializable]
+public class Table_Item_BaseInfo
+{
+    //# Key
+    public int itemID;
+
+    public int stringID;
+    public int abilityType;
+    public string iconImage;
+}
+
+[Serializable]
+public class Table_Item_AbilityInfo
+{
+    //# Key
+    public EItemAbililty abilityType;
+
+    public float value;
+}
+
+[Serializable]
+public class Table_ContantValueInfo
+{
+    //# Key
+    public EConstantValue constantType;
+
+    public float value;
+}
+
+[Serializable]
+public class Table_Mission_BaseInfo
+{
+    //# Key
+    public int missionID;
+
+    public EMissionType missionType;
+    public float value;
 }
 
 public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
 {
     [Serializable]
-    private class JsonData
+    private class JsonInfo
     {
-        public StringData[] arrStringData;
+        public Table_StringInfo[] arrStringInfo;
     }
 
     private bool _initialize = false;
     private int _loadCompleteFileCount = 0;
     private int _loadingFileCount = 0;
-    private List<Action<TextAsset>> _liJsonData = new List<Action<TextAsset>>();
-
-    private List<StringData> _liStringData = new List<StringData>();
+    private List<Action<TextAsset>> _liJsonInfo = new List<Action<TextAsset>>();
+    private List<Table_StringInfo> _liStringInfo = new List<Table_StringInfo>();
 
     public async Task Init()
     {
@@ -33,24 +75,24 @@ public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
 
         _initialize = true;
 
-        await LoadJsonData();
+        await LoadJsonInfo();
     }
 
     public void Clear()
     {
         _initialize = false;
 
-        _liJsonData.Clear();
-        _liStringData.Clear();
+        _liJsonInfo.Clear();
+        _liStringInfo.Clear();
     }
 
-    private async Task LoadJsonData()
+    private async Task LoadJsonInfo()
     {
-        Debug.Log("LoadJsonData");
+        Debug.Log("Load Json Info");
         _loadCompleteFileCount = 0;
-        _liJsonData.Clear();
+        _liJsonInfo.Clear();
 
-        await LoadStringData();
+        await LoadStringInfo();
 
         _loadingFileCount = _loadCompleteFileCount;
     }
@@ -65,19 +107,19 @@ public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
         return ((float)_loadCompleteFileCount) / _loadingFileCount * 100f;
     }
 
-    private async Task<TextAsset> LoadStringData()
+    private async Task<TextAsset> LoadStringInfo()
     {
         TaskCompletionSource<TextAsset> taskCompletionSource = new TaskCompletionSource<TextAsset>();
 
         Action<TextAsset> callback;
-        _liStringData.Clear();
+        _liStringInfo.Clear();
 
-        CHResourceManager.Instance.LoadJson(CommonEnum.EJson.String, callback = (TextAsset textAsset) =>
+        CHResourceManager.Instance.LoadJson(EJson.String, callback = (TextAsset textAsset) =>
         {
-            var jsonData = JsonUtility.FromJson<JsonData>(textAsset.text);
-            foreach (var data in jsonData.arrStringData)
+            JsonInfo jsonInfo = JsonUtility.FromJson<JsonInfo>(textAsset.text);
+            foreach (var info in jsonInfo.arrStringInfo)
             {
-                _liStringData.Add(data);
+                _liStringInfo.Add(info);
             }
 
             taskCompletionSource.SetResult(textAsset);
@@ -90,19 +132,21 @@ public partial class CHJsonManager : SingletoneStatic<CHJsonManager>
 
 public partial class CHJsonManager
 {
-    public string GetStringData(int stringID, SystemLanguage languageType = SystemLanguage.English)
+    public string GetTitleStringInfo(int stringID, SystemLanguage languageType = SystemLanguage.English)
     {
-        var findData = _liStringData.Find(_ => _.stringID == stringID);
-        if (findData == null)
+        var findInfo = _liStringInfo.Find(_ => _.languageType == languageType && _.stringID == stringID);
+        if (findInfo == null)
             return string.Empty;
 
-        if (languageType == SystemLanguage.Korean)
-        {
-            return findData.korean;
-        }
-        else
-        {
-            return findData.english;
-        }
+        return findInfo.title;
+    }
+
+    public string GetDescriptionStringInfo(int stringID, SystemLanguage languageType = SystemLanguage.English)
+    {
+        var findInfo = _liStringInfo.Find(_ => _.languageType == languageType && _.stringID == stringID);
+        if (findInfo == null)
+            return string.Empty;
+
+        return findInfo.description;
     }
 }

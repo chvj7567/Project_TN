@@ -42,4 +42,24 @@ public class CommonEnum
         StartScene,
         TestScene,
     }
+
+    public enum EItemAbililty
+    {
+        None = 0, //# 능력 없음
+        EnhanceSuccessRateUp = 1, //# 강화 확률 증가
+    }
+
+    public enum EConstantValue
+    {
+        None = 0,
+        BattleCardCount,
+    }
+
+    public enum EMissionType
+    {
+        None = 0,
+        Battle_Win,
+        Battle_Lose,
+        Battle_Diff,
+    }
 }
