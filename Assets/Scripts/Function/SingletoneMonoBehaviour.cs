@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SingletoneMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
@@ -5,6 +6,8 @@ public class SingletoneMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     private static T _instance;
     private static object _lock = new object();
     private static bool applicationIsQuitting = false;
+
+    protected static Action OnQuit;
 
     public static T Instance
     {
@@ -38,6 +41,7 @@ public class SingletoneMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 
     public void OnDestroy()
     {
+        OnQuit?.Invoke();
         applicationIsQuitting = true;
     }
 }

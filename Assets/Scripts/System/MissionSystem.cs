@@ -1,14 +1,14 @@
 using System.Collections.Generic;
-using NUnit.Framework.Interfaces;
-using UnityEngine;
 
 namespace CHMission
 {
     public class MissionData
     {
+        public CommonEnum.EMissionType missionType;
         public int missionID;
         public float curValue;
-        public float maxValue;
+        public float destValue;
+        public CommonEnum.EMissionState missionState;
     }
 
     public class MissionSystem
@@ -49,6 +49,15 @@ namespace CHMission
             return missionData;
         }
 
+        public void SetMissionCurrentValue(int missionID, int curValue)
+        {
+            MissionData missionData = GetMission(missionID);
+            if (missionData == null)
+                return;
+
+            missionData.curValue = curValue;
+        }
+
         public float GetMissionCurrentValue(int missionID)
         {
             MissionData missionData = GetMission(missionID);
@@ -64,7 +73,7 @@ namespace CHMission
             if (missionData == null)
                 return default;
 
-            return missionData.maxValue;
+            return missionData.destValue;
         }
     }
 }

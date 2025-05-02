@@ -65,5 +65,14 @@ public class CommonEnum
         Battle_Win,
         Battle_Lose,
         Battle_Diff,
+        UseCard,
+    }
+
+    public enum EMissionState
+    {
+        None = 0,
+        InProgess, //# 미션 진행 중
+        Completed, //# 미션 완료(보상 받기 전)
+        RecvRewarded, //# 미션 완료(보상 받은 후)
     }
 }
