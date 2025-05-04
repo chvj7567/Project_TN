@@ -17,7 +17,7 @@ namespace CHBattle
         public List<int> liRemainCard = new List<int>();
     }
 
-    public class BattleSystem
+    public partial class BattleSystem
     {
         private BattleHistoryData _battleHistoryData = null;
         private BattleCurrentData _battleCurrentData = null;
@@ -34,42 +34,31 @@ namespace CHBattle
             _battleCurrentData = null;
         }
 
-        public void SetHistory(int winCount, int loseCount)
+        public void SetBattleHistoryData(BattleHistoryData battleHistoryData)
         {
             if (_battleHistoryData == null)
                 return;
 
-            _battleHistoryData.totalBattleCount = winCount + loseCount;
-            _battleHistoryData.winCount = winCount;
-            _battleHistoryData.loseCount = loseCount;
+            _battleHistoryData.totalBattleCount = battleHistoryData.totalBattleCount;
+            _battleHistoryData.winCount = battleHistoryData.winCount;
+            _battleHistoryData.loseCount = battleHistoryData.loseCount;
         }
 
-        public void SetCurrentBattle(int ruleNumber, int missionID)
+        public void SetBattleCurrentData(BattleCurrentData battleCurrentData)
         {
             if (_battleCurrentData == null)
                 return;
 
-            _battleCurrentData.ruleNumber = ruleNumber;
-            _battleCurrentData.missionID = missionID;
+            _battleCurrentData.ruleNumber = battleCurrentData.ruleNumber;
+            _battleCurrentData.missionID = battleCurrentData.missionID;
         }
 
-        public void SetCurrentBattleCardList(List<int> liRemainCard)
+        public void SetBattleCardDeck(List<int> liCardDeck)
         {
             if (_battleCurrentData == null)
                 return;
 
-            _battleCurrentData.liRemainCard = liRemainCard;
-        }
-
-        public bool UseCard(int cardNumber)
-        {
-            if (_battleCurrentData == null)
-                return false;
-
-            if (_battleCurrentData.liRemainCard.Contains(cardNumber) == false)
-                return false;
-
-            return _battleCurrentData.liRemainCard.Remove(cardNumber);
+            _battleCurrentData.liRemainCard = liCardDeck;
         }
 
         public ReadOnlyCollection<int> GetRemainCardList()
