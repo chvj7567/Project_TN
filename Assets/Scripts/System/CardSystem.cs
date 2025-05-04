@@ -8,6 +8,7 @@ namespace CHCard
     {
         public int number;
         public int count;
+        public bool isInDeck;
     }
 
     public class CardSystem
@@ -24,17 +25,20 @@ namespace CHCard
             _dicCard.Clear();
         }
 
-        public void AddCard(int number, int count = 1)
+        public void AddOrSetCard(CardData cardData)
         {
-            if (_dicCard.TryGetValue(number, out CardData cardData) == false)
+            if (_dicCard.ContainsKey(cardData.number))
+                return;
+
+            if (_dicCard.TryGetValue(cardData.number, out CardData value) == false)
             {
-                cardData = new CardData();
-                cardData.number = number;
-                cardData.count = count;
+                _dicCard.Add(cardData.number, cardData);
             }
             else
             {
-                cardData.count += count;
+                value.number = cardData.number;
+                value.count = cardData.count;
+                value.isInDeck = cardData.isInDeck;
             }
         }
 
