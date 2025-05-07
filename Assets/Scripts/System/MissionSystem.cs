@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CHItem;
 
 namespace CHMission
 {
@@ -11,7 +12,7 @@ namespace CHMission
         public CommonEnum.EMissionState missionState;
     }
 
-    public class MissionSystem
+    public partial class MissionSystem
     {
         private Dictionary<int, MissionData> _dicMission = null;
 
@@ -31,6 +32,18 @@ namespace CHMission
                 return;
 
             _dicMission.Add(missionData.missionID, missionData);
+        }
+
+        public void UpdateMission(MissionData missionDatda)
+        {
+            if (_dicMission.TryGetValue(missionDatda.missionID, out MissionData value) == false)
+                return;
+
+            value.missionType = missionDatda.missionType;
+            value.missionID = missionDatda.missionID;
+            value.curValue = missionDatda.curValue;
+            value.destValue = missionDatda.destValue;
+            value.missionState = missionDatda.missionState;
         }
 
         public bool RemoveMission(int missionID)

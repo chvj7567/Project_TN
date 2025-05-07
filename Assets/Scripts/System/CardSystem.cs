@@ -1,5 +1,3 @@
-
-
 using System.Collections.Generic;
 
 namespace CHCard
@@ -11,7 +9,7 @@ namespace CHCard
         public bool isInDeck;
     }
 
-    public class CardSystem
+    public partial class CardSystem
     {
         Dictionary<int, CardData> _dicCard = null;
 
@@ -25,32 +23,30 @@ namespace CHCard
             _dicCard.Clear();
         }
 
-        public void AddOrSetCard(CardData cardData)
+        public void AddCard(CardData cardData)
         {
             if (_dicCard.ContainsKey(cardData.number))
                 return;
 
-            if (_dicCard.TryGetValue(cardData.number, out CardData value) == false)
-            {
-                _dicCard.Add(cardData.number, cardData);
-            }
-            else
-            {
-                value.number = cardData.number;
-                value.count = cardData.count;
-                value.isInDeck = cardData.isInDeck;
-            }
+            _dicCard.Add(cardData.number, cardData);
         }
 
-        public void RemoveCard(int number, int count = 1)
+        public void UpdateCard(CardData cardData)
         {
-            if (_dicCard.TryGetValue(number, out CardData cardData) == false)
+            if (_dicCard.TryGetValue(cardData.number, out CardData value) == false)
                 return;
 
-            if (cardData.count <= 0)
-                return;
+            value.number = cardData.number;
+            value.count = cardData.count;
+            value.isInDeck = cardData.isInDeck;
+        }
 
-            cardData.count -= count;
+        public bool RemoveCard(int cardNumber)
+        {
+            if (_dicCard.ContainsKey(cardNumber) == false)
+                return default;
+
+            return _dicCard.Remove(cardNumber);
         }
     }
 }

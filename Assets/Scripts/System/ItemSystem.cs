@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
+using CHCard;
 
 namespace CHItem
 {
@@ -11,7 +12,7 @@ namespace CHItem
         public int count;
     }
 
-    public class ItemSystem
+    public partial class ItemSystem
     {
         private Dictionary<long, ItemData> _dicItem = null;
 
@@ -33,6 +34,16 @@ namespace CHItem
                 return;
 
             _dicItem.Add(itemData.uid, itemData);
+        }
+
+        public void UpdateItem(ItemData itemData)
+        {
+            if (_dicItem.TryGetValue(itemData.uid, out ItemData value) == false)
+                return;
+
+            value.uid = itemData.uid;
+            value.id = itemData.id;
+            value.count = itemData.count;
         }
 
         public bool RemoveItem(long itemUID)
@@ -60,13 +71,28 @@ namespace CHItem
             return itemData.id;
         }
 
-        public int GetItemCount(long itemUID)
+        public int GetItemCountByUID(long itemUID)
         {
             ItemData itemData = GetItem(itemUID);
             if (itemData == null)
                 return default;
 
             return itemData.count;
+        }
+
+        public int GetItemCountByItemID(long itemID)
+        {
+            int count = 0;
+
+            foreach (var pair in _dicItem)
+            {
+                if (pair.Value.id == itemID)
+                {
+                    count += pair.Value.count;
+                }
+            }
+
+            return count;
         }
 
         public ReadOnlyCollection<ItemData> GetItemList(Predicate<ItemData> predicate)

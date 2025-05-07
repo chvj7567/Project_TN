@@ -6,6 +6,16 @@ namespace CHBattle
     public partial class BattleSystem
     {
         #region Request/Response
+        public void RequestAccountBattleHistory()
+        {
+            //# 배틀 전적 요청 패킷
+        }
+
+        public void ResponseAccountBattleHistory()
+        {
+
+        }
+
         public void RequestMatchBattle()
         {
             //# 배틀 매칭 패킷
