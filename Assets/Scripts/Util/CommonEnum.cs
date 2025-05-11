@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class CommonEnum
 {
+    public enum EServerResult
+    {
+        Success = 0, //# 성공
+        Login_Failed = 1, //# 로그인 실패
+    }
+
     public enum EAddressableKey
     {
         UI,
